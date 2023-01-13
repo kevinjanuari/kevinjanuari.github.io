@@ -89,6 +89,7 @@ function batteryDecrease() {
     batteryWrap.style = `--battery:${100-(battery)}%`;
     batteryValue.textContent = `${battery--}%`;
     if (battery < 0) {
+        clearInterval(rippleInterval);
         clearInterval(batteryInterval);
         gelap.classList.add('active');
     }
@@ -101,16 +102,19 @@ batteryWrap.addEventListener('click', () => {
     batteryValue.textContent = `100%`;
     batteryAlt.classList.remove('active');
     gelap.classList.remove('active');
+    clearInterval(rippleInterval);
     clearInterval(batteryInterval);
+    rippleInterval = setInterval(createRipple, 1000);
     batteryInterval = setInterval(batteryDecrease, 1000);
 });
 
+let rippleInterval;
 document.addEventListener('DOMContentLoaded', (e) => {
 	document.getElementById('preloader').classList.add('loaded');
 	setTimeout(function(){
         document.getElementById('preloader').remove();
         firstMenu.click();
-        setInterval(createRipple, 1000);
+        rippleInterval = setInterval(createRipple, 1000);
         batteryInterval = setInterval(batteryDecrease, 1000);
     }, 2000);
     console.log('%c>.<', 'color: green; background: yellow; font-size:50px');
